@@ -1,26 +1,19 @@
 // The server folder must be in the root
-const express = require('express'); // The same as -> import express from 'express'
+const express = require('express'); // similar to -> import express from 'express'
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const bc = require('./controllers/books_controller');  //bc - is just short for books_controller, it's just a variable name
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
-const book = [];
-let id = 0;
 
-app.post('/api/books', (req, res) => {
-    console.log('You sent me this data', req.body);
-    books.push({
-        id: id,
-        title: req.body.title,
-        author: req.body.author
-    });
-    id++
-    console.log('books', books);
-    res.json(books);
-});
+app.post('/api/books', bc.create);   // when someone posts it follows the books_controller instructions
+app.get('/api/books', bc.read);
+app.put('/api/books/:id', bc.update);
+app.delete('/api/books/:id', bc.delete);
 
 app.listen(3000, () => {
-    console.log('Server listening on port' + 3000)
+    console.log('Server listening on port: ' + 3000);
 });
-
